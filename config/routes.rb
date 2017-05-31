@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  devise_for :users
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   # Routes for the Comment resource:
   # CREATE
   get "/comments/new", :controller => "comments", :action => "new"
@@ -67,8 +71,7 @@ Rails.application.routes.draw do
   get "/delete_user/:id", :controller => "users", :action => "destroy"
   #------------------------------
 
-  devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
 
   root "photos#index"
 
