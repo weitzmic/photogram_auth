@@ -8,7 +8,12 @@
       <dt>Username</dt>
       <dd><%= @user.username %></dd>
       <dt>User Photos</dt>
-      <dd><%= @user.photos.each %></dd>
+      <% @user.photos.each do |photo| %>
+    <tr>
+    	<td><%= photo.caption %></td>
+    	<td><%= photo.image %></td>
+    </tr>
+    <% end %>
 
     </dl>
 

@@ -1,42 +1,56 @@
 <div class="page-header">
   <h1>
     Photos
-    <a href="/photos/new" class="btn btn-lg btn-success"> <i class="fa fa-plus"></i></a>
-  </h1>
-</div>
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">
+    <a href="/photos/new" class="btn btn-lg btn-success">
+      <i class="fa fa-plus"></i></a>
+    </h1>
+  </div>
+  <% @photos.each do |photo| %>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
 
-          Caption
-        </h3>
-      </div>
-      <div class="panel-body">
+            <a href="/users/<%= photo.user_id %>"> <%= photo.user.username %> </a>
+                  <small><%= time_ago_in_words(photo.created_at)%> ago </small>
 
-        <% @photos.each do |photo| %>
 
-        <%= photo.caption %>
-        <img src="<%= photo.image %>" class="img-responsive">"
-        <!-- <%= photo.user_id %> -->
+          </h3>
+        </div>
+        <div class="panel-body">
 
+          <a href="/photos/<%= photo.id %>">
+            <img src="<%= photo.image %>" class="img-responsive">
+          </a>
+          <p>
+            <form action="/create_like" method="post">
+              <!-- Hidden input for authenticity token to protect from forgery -->
+              <input name="authenticity_token" type="hidden" value="1spKmsbbVkWby4jVNgHi334BC36GYjdcOPMGfZH5d+XnKYHxlSISOeN7tFuUD09aQMMTVJcuE8vY4vw4GrVcWQ==">
+
+              <input type="hidden" name="photo_id" value="<%= photo.id %>">
+
+              <input type="hidden" name="user_id" value="<%= photo.user_id %>">
+
+
+
+
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- <th>Image</th>
-<th>User</th>
-<th>Actions</th> -->
-
+  <!-- <th>Image</th>
+  <th>User</th>
+  <th>Actions</th> -->
 
 
-<td>
-  <!-- <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a> -->
-  <!-- <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
-  <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a> -->
-</td>
+
+  <td>
+    <!-- <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a> -->
+    <!-- <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
+    <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a> -->
+  </td>
 </tr>
 <% end %>
 </table>
