@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :likes
 
-  validates :name, :presence => true
+  validates :username, :presence => true
 
 
 end
