@@ -14,7 +14,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <form action="/create_like" method="post">
+    <form action="/create_my_like" method="post">
       <!-- Hidden input for authenticity token to protect from forgery -->
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
@@ -40,7 +40,7 @@
         Create Like
       </button>
       or
-      <a href="/likes">Cancel</a>
+      <a href="/my_likes">Cancel</a>
     </form>
   </div>
 </div>

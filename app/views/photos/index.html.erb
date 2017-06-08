@@ -1,9 +1,9 @@
 <div class="page-header">
-  <h1>
+  <h3>
     Photos
     <a href="/photos/new" class="btn btn-lg btn-success">
       <i class="fa fa-plus"></i></a>
-    </h1>
+    </h3>
   </div>
   <% @photos.each do |photo| %>
   <div class="row">
@@ -13,7 +13,7 @@
           <h3 class="panel-title">
 
             <a href="/users/<%= photo.user_id %>"> <%= photo.user.username %> </a>
-            <small><%= time_ago_in_words(photo.created_at)%>  </small>
+            <small><%= time_ago_in_words(photo.created_at)%> ago </small>
 
 
           </h3>
@@ -23,30 +23,70 @@
           <a href="/photos/<%= photo.id %>">
             <img src="<%= photo.image %>" class="img-responsive">
           </a>
+
           <p>
-            <form action="/create_like" method="post">
+            <% if current_user.liked_photos.ids.include? photo.id %>
+            <form action="/quick_delete_my_like/<%= photo.likes.find_by(:user_id => current_user.id).id %>" method="get">
+              <!-- Label and input for like -->
+              <input type="hidden" id="like_id" name="like_id" value="<%= photo.likes.find_by(:user_id => current_user.id).id %>">
+              <button class="btn btn-link">
+                <i class="fa fa-heart-o" aria-hidden="true"></i>
+              </button>
+              <% if photo.fans.count == 1 %>
+              <small class="text-muted"><%= photo.fans.pluck(:username).to_sentence %> likes this</small>
+              <% else %>
+              <small class="text-muted"><%= photo.fans.pluck(:username).to_sentence %> like this</small>
+              <% end %>
+            </form>
+
+            <% else %>
+
+            <form action="/quick_create_my_like" method="post">
               <!-- Hidden input for authenticity token to protect from forgery -->
               <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-              <input type="hidden" name="photo_id" value="<%= photo.id %>">
+              <!-- Label and input for user_id -->
+              <div class="form-group">
+                <input type="hidden" id="photo_id" name="photo_id" class="form-control" value="<%= photo.id %>">
+              </div>
 
-              <input type="hidden" name="user_id" value="<%= photo.user_id %>">
+              <!-- Label and input for photo_id -->
+              <div class="form-group">
+                <input type="hidden" name="user_id" class="form-control" value="<%= current_user.id %>">
+              </div>
 
               <button class="btn btn-link">
-                <i class="fa fa-heart-o"></i>
+                <i class="fa fa-heart" aria-hidden="true"></i>
               </button>
               <% if photo.likes.count == 0 %>
               <small class="text-muted">be the first to like this</small>
+              <% elsif photo.fans.count == 1 %>
+              <small class="text-muted"><%= photo.fans.pluck(:username).to_sentence %> likes this</small>
               <% else %>
-              <% photo.likes.each do |like| %>
-              <small class="text-muted"><%= like.user.username %></small>
-              <% end %>
+              <small class="text-muted"><%= photo.fans.pluck(:username).to_sentence %> like this</small>
+              <% end  %>
               <% end %>
             </form>
           </p>
+
+          <% photo.comments.each do |comment|  %>
+
+          <ul class="media-list">
+            <li class="media">
+              <div class="media-body">
+                <h6 class="media-heading">
+                  <a href="/users/<%= comment.user_id %>"><%= comment.user.username %></a>
+                  <small><%= time_ago_in_words(comment.created_at)%> ago</small>
+                </h6>
+                <%= comment.body %>
+              </div>
+            </li>
+          </ul>
+          <% end %>
+
           <li class="media">
             <div class="media-body">
-              <form action="/create_comment" method="post">
+              <form action="/quick_create_comment" method="post">
                 <!-- Hidden input for authenticity token to protect from forgery -->
                 <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
@@ -64,14 +104,13 @@
                     <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment..." required>
 
                     <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">
+                      <button class="btn btn-link">
                         <i class="fa fa-commenting-o"></i>
                       </button>
                     </span>
                   </div><!-- /input-group -->
                 </div>
               </form>
-
             </div>
           </li>
         </ul>
@@ -79,6 +118,15 @@
           <a href="/photos" class="btn btn-primary">
             <i class="fa fa-chevron-left"></i>
           </a>
+          <% if photo.user_id == current_user.id %>
+          <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">
+            <i class="fa fa-edit"></i>
+          </a>
+          <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger">
+            <i class="fa fa-trash-o"></i>
+          </a>
+          <% else %>
+          <% end %>
         </div>
       </div>
     </div>

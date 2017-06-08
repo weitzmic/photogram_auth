@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # Routes for the Comment resource:
   # CREATE
   get "/comments/new", :controller => "comments", :action => "new"
-  post "/create_comment", :controller => "comments", :action => "create"
+  post "/quick_create_comment", :controller => "comments", :action => "create"
 
   # READ
   get "/comments", :controller => "comments", :action => "index"
@@ -22,19 +22,19 @@ Rails.application.routes.draw do
 
   # Routes for the Like resource:
   # CREATE
-  get "/likes/new", :controller => "likes", :action => "new"
-  post "/create_like", :controller => "likes", :action => "create"
+  get "/my_likes/new", :controller => "likes", :action => "new"
+  post "/quick_create_my_like", :controller => "likes", :action => "create"
 
   # READ
-  get "/likes", :controller => "likes", :action => "index"
-  get "/likes/:id", :controller => "likes", :action => "show"
+  get "/my_likes", :controller => "likes", :action => "index"
+  get "/my_like/:id", :controller => "likes", :action => "show"
 
   # UPDATE
-  get "/likes/:id/edit", :controller => "likes", :action => "edit"
-  post "/update_like/:id", :controller => "likes", :action => "update"
+  get "/my_likes/:id/edit", :controller => "likes", :action => "edit"
+  post "/update_my_like/:id", :controller => "likes", :action => "update"
 
   # DELETE
-  get "/delete_like/:id", :controller => "likes", :action => "destroy"
+  get "/quick_delete_my_like/:id", :controller => "likes", :action => "destroy"
   #------------------------------
 
   # Routes for the Photo resource:
